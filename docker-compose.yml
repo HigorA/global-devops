@@ -1,0 +1,33 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    image: mysql:latest
+    environment:
+      MYSQL_USER: gl
+      MYSQL_PASSWORD: gl
+      MYSQL_DATABASE: global
+      MYSQL_ROOT_PASSWORD: gl
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+      - global_network
+    volumes:
+      - db_global_data:/var/lib/mysql
+  app:
+    container_name: global_api
+    build: .
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    networks:
+      - global_network
+
+networks:
+  global_network:
+
+volumes:
+  db_global_data:
